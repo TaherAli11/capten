@@ -8,7 +8,7 @@
 
     <title>Capten</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script>
+    <!-- <script>
         document.addEventListener('contextmenu', (e) => e.preventDefault());
 
         function ctrlShiftKey(e, keyCode) {
@@ -26,7 +26,7 @@
             )
                 return false;
         };
-    </script>
+    </script> -->
 
 
 
@@ -34,7 +34,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="t.css">
     <style>
-        .key-container {
+        /* .key-container {
             margin-top: 20px;
             max-height: 400px;
             overflow-y: scroll;
@@ -108,16 +108,18 @@
 
         .key-item button:hover {
             background-color: #4a004d;
-        }
+        } */
     </style>
 </head>
 
-<body>
+<body background="test.jpg" style="  background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: 100% 100%;">
 
 
 
 
-    <div class="bg-gradient-to-tr from-fuchsia-300 to-sky-500">
+    <div >
         <div class="language-selector" style="border-radius: 250px;">
             <select id="languageSelect">
                 <option value="ar">العربية</option>
@@ -126,6 +128,7 @@
             </select>
 
         </div>
+        <img src="d.png" class="log"  height="70px" width="70px" alt="">
 
 
 
@@ -133,7 +136,7 @@
 
 
 
-        <section id="login" class="p-4 flex flex-col justify-center min-h-screen max-w-md mx-auto">
+        <section id="login" style="min-height:46rem" class="p-4 flex flex-col justify-center  max-w-md mx-auto">
 
             <div class="p-6 bg-sky-100 rounded">
                 <div class="flex items-center justify-center font-black m-3 mb-12">
@@ -209,7 +212,13 @@
 
 
             </div>
+
+
+
+        
+        
         </section>
+            <h2 style="text-align: center; margin-bottom:0% ; color: white;">developer : @Captin_100 Official Channel : @EverestAirdrops </h2>
 
 
         <script src="t.js"></script>
