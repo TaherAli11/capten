@@ -156,7 +156,7 @@ select option {
     text-align: center;
     width: 40px;
     padding: 10px 10px;
-    background-color: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(121,9,119,1) 35%, rgba(0,61,255,1) 100%);
+    background-color: hwb(260 23% 27%);
     color: white;
     border: none;
     border-radius: 4px;
@@ -209,6 +209,13 @@ select option {
     right: 10px;
 }
 
+.log {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    margin: 10px;
+}
+
 #languageSelect {
     background-color:hwb(344 20% 22%);
     color: #ffffff;
@@ -217,5 +224,3 @@ select option {
     padding: 5px;
     font-size: large;
 }
-
-

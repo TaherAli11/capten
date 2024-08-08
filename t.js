@@ -212,7 +212,7 @@ document.getElementById('startBtn').addEventListener('click', async () => {
                 event.target.style.backgroundColor = '#28a745';
                 setTimeout(async () => {
                     event.target.innerText = await getTranslation('copyKeyButton');
-                    event.target.style.backgroundColor = '#6a0080';
+                    event.target.style.backgroundColor = 'hwb(344 20% 22%)';
                 }, 2000);
             });
         });
@@ -224,7 +224,7 @@ document.getElementById('startBtn').addEventListener('click', async () => {
             event.target.style.backgroundColor = '#28a745';
             setTimeout(async () => {
                 event.target.innerText = await getTranslation('copyAllKeysButton');
-                event.target.style.backgroundColor = '#6a0080';
+                event.target.style.backgroundColor =  'hwb(344 20% 22%)';
             }, 2000);
         });
     });
