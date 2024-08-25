@@ -1,30 +1,58 @@
-const EVENTS_DELAY = 20000;
 const defaultLanguage = document.documentElement.getAttribute('lang')
 const gamePromoConfigs = {
     MyCloneArmy: {
         appToken: '74ee0b5b-775e-4bee-974f-63e7f4d5bacb',
-        promoId: 'fe693b26-b342-4159-8808-15e3ff7f8767'
+        promoId: 'fe693b26-b342-4159-8808-15e3ff7f8767',
+        eventsDelay: 120000,
+        attemptsNumber: 11
     },
     ChainCube2048: {
         appToken: 'd1690a07-3780-4068-810f-9b5bbf2931b2',
-        promoId: 'b4170868-cef0-424f-8eb9-be0622e8e8e3'
+        promoId: 'b4170868-cef0-424f-8eb9-be0622e8e8e3',
+        eventsDelay: 20000,
+        attemptsNumber: 10
     },
     TrainMiner: {
         appToken: '82647f43-3f87-402d-88dd-09a90025313f',
-        promoId: 'c4480ac7-e178-4973-8061-9ed5b2e17954'
+        promoId: 'c4480ac7-e178-4973-8061-9ed5b2e17954',
+        eventsDelay: 20000,
+        attemptsNumber: 10
     },
     BikeRide3D: {
         appToken: 'd28721be-fd2d-4b45-869e-9f253b554e50',
-        promoId: '43e35910-c168-4634-ad4f-52fd764a843f'
+        promoId: '43e35910-c168-4634-ad4f-52fd764a843f',
+        eventsDelay: 20000,
+        attemptsNumber: 22
     },
     MergeAway: {
         appToken: '8d1cc2ad-e097-4b86-90ef-7a27e19fb833',
-        promoId: 'dc128d28-c45b-411c-98ff-ac7726fbaea4'
-
+        promoId: 'dc128d28-c45b-411c-98ff-ac7726fbaea4',
+        eventsDelay: 20000,
+        attemptsNumber: 10
     },
-    TwerkRace3D: {
-        appToken:'61308365-9d16-4040-8bb0-2f4a4c69074c',
-        promoId: '61308365-9d16-4040-8bb0-2f4a4c69074c'
+    TwerkRace: {
+        appToken: '61308365-9d16-4040-8bb0-2f4a4c69074c',
+        promoId: '61308365-9d16-4040-8bb0-2f4a4c69074c',
+        eventsDelay: 20000,
+        attemptsNumber: 10
+    },
+    Polysphere: {
+        appToken: '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71',
+        promoId: '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71',
+        eventsDelay: 20000,
+        attemptsNumber: 20
+    },
+    MowandTrim: {
+        appToken: 'ef319a80-949a-492e-8ee0-424fb5fc20a6',
+        promoId: 'ef319a80-949a-492e-8ee0-424fb5fc20a6',
+        eventsDelay: 20000,
+        attemptsNumber: 20
+    },
+    MudRacing: {
+        appToken: '8814a785-97fb-4177-9193-ca4180ff9da8',
+        promoId: '8814a785-97fb-4177-9193-ca4180ff9da8',
+        eventsDelay: 20000,
+        attemptsNumber: 20
     }
 };
 
@@ -158,11 +186,11 @@ document.getElementById('startBtn').addEventListener('click', async () => {
             startBtn.disabled = false;
             return null;
         }
-
-        for (let i = 0; i < 7; i++) {
-            await sleep(EVENTS_DELAY * delayRandom());
+        
+        for (let i = 0; i < currentAppConfig.attemptsNumber; i++) {
+            await sleep(currentAppConfig.eventsDelay * delayRandom());
             const hasCode = await emulateProgress(clientToken);
-            updateProgress(10 / keyCount);
+            updateProgress((100 / currentAppConfig.attemptsNumber) / keyCount);
             if (hasCode) {
                 break;
             }
@@ -170,7 +198,6 @@ document.getElementById('startBtn').addEventListener('click', async () => {
 
         try {
             const key = await generateKey(clientToken);
-            updateProgress(30 / keyCount);
             return key;
         } catch (error) {
             alert(`Failed to generate key: ${error.message}`);
@@ -221,7 +248,7 @@ document.getElementById('startBtn').addEventListener('click', async () => {
                 event.target.style.backgroundColor = '#28a745';
                 setTimeout(async () => {
                     event.target.innerText = await getTranslation('copyKeyButton');
-                    event.target.style.backgroundColor = 'hwb(344 20% 22%)';
+                    event.target.style.backgroundColor = '#6a0080';
                 }, 2000);
             });
         });
@@ -233,7 +260,7 @@ document.getElementById('startBtn').addEventListener('click', async () => {
             event.target.style.backgroundColor = '#28a745';
             setTimeout(async () => {
                 event.target.innerText = await getTranslation('copyAllKeysButton');
-                event.target.style.backgroundColor =  'hwb(344 20% 22%)';
+                event.target.style.backgroundColor = '#6a0080';
             }, 2000);
         });
     });
@@ -243,9 +270,7 @@ document.getElementById('startBtn').addEventListener('click', async () => {
     startBtn.disabled = false;
 });
 
-// document.getElementById('creatorChannelBtn').addEventListener('click', () => {
-//     window.location.href = 'https://t.me/iAlexMG';
-// });
+
 
 function generateClientId() {
     const timestamp = Date.now();
@@ -261,7 +286,12 @@ async function login(clientId) {
     });
     const data = await response.json();
     if (!response.ok) {
-        throw new Error(data.message || 'Failed to log in');
+        if (data.error_code == "TooManyIpRequest") {
+            throw new Error('You have reached the rate limit. Please wait a few minutes and try again.');
+        } else {
+            throw new Error(data.error_message || 'Failed to log in');
+        }
+        
     }
     return data.clientToken;
 }
@@ -312,7 +342,7 @@ async function emulateProgress(clientToken) {
     });
     const data = await response.json();
     // if (!response.ok) {
-    //     throw new Error(data.message || 'Failed to register event');
+    //     throw new Error(data.error_message || 'Failed to register event');
     // }
     return data.hasCode;
 }
@@ -328,7 +358,7 @@ async function generateKey(clientToken) {
     });
     const data = await response.json();
     if (!response.ok) {
-        throw new Error(data.message || 'Failed to generate key');
+        throw new Error(data.error_message || 'Failed to generate key');
     }
     return data.promoCode;
 }
